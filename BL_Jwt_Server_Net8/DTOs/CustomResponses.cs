@@ -2,7 +2,7 @@
 {
     public class CustomResponses
     {
-        public record RgistrationResponse(bool Flag, string Message = null!);
+        public record RegistrationResponse(bool Flag, string Message = null!);
         public record LoginResponse(bool Flag = false, string Message = null!, string Token = null!);
     }
 }
