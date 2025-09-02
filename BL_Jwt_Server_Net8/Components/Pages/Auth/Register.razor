@@ -1,0 +1,64 @@
+﻿@page "/register"
+@using BL_Jwt_Server_Net8.DTOs
+@using BL_Jwt_Server_Net8.Services
+@using BL_Jwt_Server_Net8.States
+@using Microsoft.AspNetCore.Components.Authorization
+@using static BL_Jwt_Server_Net8.DTOs.CustomResponses
+
+@inject IAccountService AccountService
+@inject NavigationManager NavMan
+@inject IJSRuntime JS
+@inject AuthenticationStateProvider AuthStateProvider
+
+@rendermode InteractiveServer
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <h2>Register</h2>
+            <EditForm Model="RegisterDTO" OnValidSubmit="HandleSubmit">
+                <DataAnnotationsValidator />
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <InputText class="form-control" @bind-Value="RegisterDTO.Name" />
+                </div>
+                <div class="form-group mt-3">
+                    <label class="form-label">Email</label>
+                    <InputText class="form-control" @bind-Value="RegisterDTO.Email" />
+                </div>
+
+                <div class="form-group mt-3">
+                    <label class="form-label">Password</label>
+                    <InputText class="form-control" @bind-Value="RegisterDTO.Password" type="password" />
+                </div>
+                <div class="form-group mt-3">
+                    <label class="form-label">Confirm Password</label>
+                    <InputText class="form-control" @bind-Value="RegisterDTO.ConfirmPassword" type="password" />
+                </div>
+
+                <div class="form-group mt-3">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+                <ValidationSummary />
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    RegisterDTO RegisterDTO = new();
+
+    private async Task HandleSubmit()
+    {
+        RegistrationResponse response = await AccountService.Register(RegisterDTO);
+        if (!response.Flag)
+        {
+            await JS.InvokeVoidAsync("alert", response.Message);
+            return;
+        }
+
+        await JS.InvokeVoidAsync("alert", response.Message);
+        RegisterDTO = new();
+        NavMan.NavigateTo("/login");
+    }
+}
