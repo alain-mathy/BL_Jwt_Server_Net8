@@ -2,7 +2,10 @@ using BL_Jwt_Server_Net8.Components;
 using BL_Jwt_Server_Net8.Data;
 using BL_Jwt_Server_Net8.Implementations.Interfaces;
 using BL_Jwt_Server_Net8.Implementations.Repositories;
+using BL_Jwt_Server_Net8.Services;
+using BL_Jwt_Server_Net8.States;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -72,6 +75,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
 var app = builder.Build();
 
