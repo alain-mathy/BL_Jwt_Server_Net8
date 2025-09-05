@@ -8,5 +8,6 @@ namespace BL_Jwt_Server_Net8.Services
     {
         Task<RegistrationResponse> Register(RegisterDTO model);
         Task<LoginResponse> Login(LoginDTO model);
+        Task<WeatherForecast[]> GetWeatherForecasts();
     }
 }
